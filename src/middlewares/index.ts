@@ -1,3 +1,5 @@
 import ApiKeyMiddleware from "./ApiKeyMiddleware";
+import AuthMiddleware from "./AuthMiddleware";
+import MulterMiddleware from "./MulterMiddleware";
 
-export { ApiKeyMiddleware };
+export { ApiKeyMiddleware, AuthMiddleware, MulterMiddleware };
