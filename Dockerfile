@@ -37,6 +37,8 @@ RUN npx prisma generate
 # Copy the environment file
 COPY .env.example .env
 
+COPY tsconfig.json ./
+
 # Build the application (if using TypeScript)
 RUN npm run build
 
