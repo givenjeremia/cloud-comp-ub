@@ -8,6 +8,9 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
-RUN npm run build
+# RUN npm run build
 
-CMD ["node", "./build/app.js"] 
+COPY .env.example .env
+
+CMD ["npm", "start"] 
+# CMD ["node", "./build/app.js"] 
