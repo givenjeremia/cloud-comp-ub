@@ -30,7 +30,7 @@ RUN npm install --legacy-peer-deps
 
 # Copy the Prisma schema directory
 COPY prisma ./prisma
-
+COPY . .
 # Generate the Prisma client
 RUN npx prisma generate
 
@@ -43,7 +43,7 @@ COPY tsconfig.json ./
 RUN npm run build
 
 # Copy the rest of your application code
-COPY . .
+
 
 
 
