@@ -1,16 +1,38 @@
-FROM node:18 AS builder
+# FROM node:18 AS builder
 
+# WORKDIR /app
+
+# COPY package*.json ./
+
+# RUN npm install --legacy-peer-deps
+
+# COPY . .
+
+# # RUN npm run build
+
+# COPY .env.example .env
+
+# CMD ["npm", "start"] 
+# CMD ["node", "./build/app.js"] 
+# Use a base image
+FROM node:18
+
+# Set the working directory
 WORKDIR /app
 
-COPY package*.json ./
+# Copy package files
+COPY package.json package-lock.json ./
 
-RUN npm install --legacy-peer-deps
+# Install dependencies
+RUN npm install
 
+# Copy the rest of your application code
 COPY . .
 
-# RUN npm run build
+# Build the application
+RUN npm install --legacy-peer-deps
 
 COPY .env.example .env
 
-CMD ["npm", "start"] 
-# CMD ["node", "./build/app.js"] 
+# Start the application
+CMD ["node", "./build/app.js"]
