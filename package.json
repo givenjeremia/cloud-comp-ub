@@ -16,7 +16,7 @@
         "prettier": "prettier --write ."
     },
     "keywords": [],
-    "author": "Pramudya Wibowo",
+    "author": "Given Jeremia",
     "license": "ISC",
     "dependencies": {
         "@prisma/client": "5.12.1",
