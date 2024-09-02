@@ -23,21 +23,26 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Clean up node_modules and package-lock.json if they exist
 RUN rm -rf node_modules package-lock.json
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
+# Copy the Prisma schema directory
 COPY prisma ./prisma
 
+# Generate the Prisma client
+RUN npx prisma generate
+
+# Copy the environment file
 COPY .env.example .env
+
+# Build the application (if using TypeScript)
+RUN npm run build
 
 # Copy the rest of your application code
 COPY . .
 
-# Build the application
-RUN npm run build
 
 
 # Start the application
