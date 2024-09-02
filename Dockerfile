@@ -27,7 +27,9 @@ COPY package*.json ./
 RUN rm -rf node_modules package-lock.json
 
 # Install dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install
+
+COPY .env.example .env
 
 # Copy the rest of your application code
 COPY . .
@@ -35,7 +37,6 @@ COPY . .
 # Build the application
 RUN npm run build
 
-COPY .env.example .env
 
 # Start the application
 CMD ["npm", "start"]
