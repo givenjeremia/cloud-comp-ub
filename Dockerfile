@@ -29,6 +29,8 @@ RUN rm -rf node_modules package-lock.json
 # Install dependencies
 RUN npm install
 
+COPY prisma ./prisma
+
 COPY .env.example .env
 
 # Copy the rest of your application code
