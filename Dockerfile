@@ -20,8 +20,11 @@ FROM node:18
 # Set the working directory
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Clean up node_modules and package-lock.json if they exist
+RUN rm -rf node_modules package-lock.json
 
 # Install dependencies
 RUN npm install --legacy-peer-deps
