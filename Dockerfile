@@ -24,15 +24,13 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copy the rest of your application code
 COPY . .
 
 # Build the application
-RUN npm install --legacy-peer-deps
-
-COPY .env.example .env
+# RUN npm run build
 
 # Start the application
 CMD ["node", "./build/app.js"]
