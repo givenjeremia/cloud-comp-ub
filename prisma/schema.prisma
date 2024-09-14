@@ -9,24 +9,15 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model Notification {
-  id        Int      @id @default(autoincrement())
-  title     String
-  message   String
-  json      Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-
-  @@map("notifications")
-}
 
 model User {
   id          Int      @id @default(autoincrement())
   name        String
+  username    String
   phonenumber String
   password    String
   createdAt   DateTime @default(now())
@@ -66,28 +57,18 @@ model Token {
   @@map("tokens")
 }
 
-model Article {
-  id        Int      @id @default(autoincrement())
-  slug      String   @unique
-  title     String   @db.Text
-  content   String   @db.Text
+model BabyName {
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique @default(uuid())
+  name        String   @unique
+  gender      String   @db.Text
+  meaning     String   @db.Text
+  origin      String   @db.Text
+  sub_origin  String?   @db.Text
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  images ArticleImage[]
-
-  @@map("articles")
+  @@map("baby_names")
 }
 
-model ArticleImage {
-  id        Int      @id @default(autoincrement())
-  articleId Int
-  path      String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-
-  article Article @relation(fields: [articleId], references: [id])
-
-  @@index([articleId])
-  @@map("article_images")
-}
