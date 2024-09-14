@@ -48,22 +48,22 @@ class AuthController extends Controller {
     ];
     public async register(req: Request, res: Response): Promise<Response> {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) return super.badRequest(res, "invalid request", errors.array());
+            // const errors = validationResult(req);
+            // if (!errors.isEmpty()) return super.badRequest(res, "invalid request", errors.array());
 
-            const { name, phonenumber, password } = req.body;
-            const user = await prisma.user.create({
-                data: {
-                    name: name,
-                    phonenumber: formatPhonenumber(phonenumber),
-                    password: await hashPassword(password),
-                },
-            });
+            // const { name, phonenumber, password } = req.body;
+            // const user = await prisma.user.create({
+            //     data: {
+            //         name: name,
+            //         phonenumber: formatPhonenumber(phonenumber),
+            //         password: await hashPassword(password),
+            //     },
+            // });
 
-            const otp = generateOtp();
-            sendOtp(user.phonenumber, otp, "login");
+            // const otp = generateOtp();
+            // sendOtp(user.phonenumber, otp, "login");
 
-            return super.success(res, "success", { user: new UserResource().get(user), otp: otp });
+            return super.success(res, "success", { });
         } catch (error: any) {
             console.error(error.message);
             return super.error(res, error.message);
