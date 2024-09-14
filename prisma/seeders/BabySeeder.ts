@@ -28,7 +28,13 @@ class BabyNameSeeder {
                     const insertStartTime = new Date();
                     
                     let baby = await this.prisma.babyName.upsert({
-                        where: { name: coa.name },
+                        where: { 
+                            name: coa.name,
+                            gender: coa.gender,
+                            meaning: coa.meaning,
+                            origin: coa.origin,
+                            sub_origin: coa.sub_origin,
+                        },
                         update: {
                             name: coa.name,
                             gender: coa.gender,
