@@ -68,6 +68,7 @@ class BabyNameSeeder {
         const operationEndTime = new Date();
         const totalTime = operationEndTime.getTime() - operationStartTime.getTime();
     
+        console.log('Success Count : ' + successCount)
         if (successCount === coaDataArray.length) {
             console.log('All upsert operations were successful.');
         } else {
