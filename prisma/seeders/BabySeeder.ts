@@ -26,30 +26,15 @@ class BabyNameSeeder {
             if (coa.gender && coa.gender !== 'Gender') {
                 try {
                     const insertStartTime = new Date();
-                    
-                    let baby = await this.prisma.babyName.upsert({
-                        where: { 
+                    let baby = await this.prisma.babyName.create({
+                        data: {
                             name: coa.name,
                             gender: coa.gender,
                             meaning: coa.meaning,
                             origin: coa.origin,
                             sub_origin: coa.sub_origin,
                         },
-                        update: {
-                            name: coa.name,
-                            gender: coa.gender,
-                            meaning: coa.meaning,
-                            origin: coa.origin,
-                            sub_origin: coa.sub_origin,
-                        },
-                        create: {
-                            name: coa.name,
-                            gender: coa.gender,
-                            meaning: coa.meaning,
-                            origin: coa.origin,
-                            sub_origin: coa.sub_origin,
-                        },
-                    });
+                    });                    
     
                     const insertEndTime = new Date(); 
                     const insertionTime = insertEndTime.getTime() - insertStartTime.getTime();
