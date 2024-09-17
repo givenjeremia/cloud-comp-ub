@@ -60,7 +60,7 @@ model Token {
 model BabyName {
   id          Int      @id @default(autoincrement())
   uuid        String   @unique @default(uuid())
-  name        String   @unique
+  name        String   @db.Text
   gender      String   @db.Text
   meaning     String   @db.Text
   origin      String   @db.Text
