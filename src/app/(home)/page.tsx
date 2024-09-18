@@ -12,6 +12,20 @@ import { Heart } from "lucide-react"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
+import { Carousel } from "@/components/ui/apple-cards-carousel";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table"
+import React from "react";
 
 const FormSchema = z.object({
   gender: z
@@ -24,28 +38,119 @@ const FormSchema = z.object({
     }),
 })
 
+export type Name = {
+  name: string,
+  gender: 'M' | 'F',
+  meaning: string,
+  origin: string,
+  likes: number,
+}
+
+const names: Name[] = [
+  {
+    name: "Adam",
+    gender: "M",
+    meaning: "Nama pria pertama / manusia pertama",
+    origin: "Africa",
+    likes: 456,
+  },
+  {
+    name: "Eve",
+    gender: "F",
+    meaning: "Nama wanita pertama / manusia pertama",
+    origin: "Africa",
+    likes: 423,
+  },
+  {
+    name: "Adam",
+    gender: "M",
+    meaning: "Nama pria pertama / manusia pertama",
+    origin: "Africa",
+    likes: 456,
+  },
+  {
+    name: "Eve",
+    gender: "F",
+    meaning: "Nama wanita pertama / manusia pertama",
+    origin: "Africa",
+    likes: 423,
+  },
+  {
+    name: "Adam",
+    gender: "M",
+    meaning: "Nama pria pertama / manusia pertama",
+    origin: "Africa",
+    likes: 456,
+  },
+  {
+    name: "Eve",
+    gender: "F",
+    meaning: "Nama wanita pertama / manusia pertama",
+    origin: "Africa",
+    likes: 423,
+  },
+];
+
+export const columns: ColumnDef<Name>[] = [
+  {
+    accessorKey: "nama",
+    accessorFn: (row) => row.name,
+    header: 'Nama',
+  },
+  {
+    accessorKey: "jenisKelamin",
+    accessorFn: (row) => row.name,
+    header: 'Jenis Kelamin',
+  },
+  {
+    accessorKey: "arti",
+    accessorFn: (row) => row.name,
+    header: 'Arti',
+  },
+  {
+    accessorKey: "asal",
+    accessorFn: (row) => row.name,
+    header: 'Asal',
+  },
+  {
+    accessorKey: "jumlahLike",
+    accessorFn: (row) => row.name,
+    header: 'Jumlah Like',
+  },
+]
+
 export default function Home() {
+  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
+  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   })
 
-  const names = [
-    {
-      name: "Adam",
-      gender: "M",
-      meaning: "Nama pria pertama / manusia pertama",
-      origin: "Africa",
-      likes: 456,
-    },
-    {
-      name: "Eve",
-      gender: "F",
-      meaning: "Nama wanita pertama / manusia pertama",
-      origin: "Africa",
-      likes: 423,
-    },
-  ]
-
+  const cards = names.map((name) => (
+    <Card key={name.name} className="w-64 bg-opacity-10 bg-white text-white">
+      <CardHeader className="flex flex-row justify-between items-center">
+        <CardTitle className="flex justify-center items-center">
+          <span className={`${name.gender == 'M' ? 'bg-blue-400' : 'bg-pink-400'} w-8 h-8 rounded-full p-2 me-2 flex items-center justify-center`}>
+            {name.gender == 'M' ? '👦' : '👧'}
+          </span>
+          <span>{name.name}</span>
+        </CardTitle>
+        <Button variant={"link"} size={"icon"}><Heart color="#fff" /></Button>
+      </CardHeader>
+      <CardContent>
+        <p>{name.meaning}</p>
+      </CardContent>
+      <CardFooter>
+        <p className="text-sm font-light">- {name.origin}</p>
+      </CardFooter>
+    </Card>
+  ));
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     // Request data
@@ -60,7 +165,7 @@ export default function Home() {
           delay: 0.3,
           duration: 0.8,
           ease: "easeInOut",
-        }} className="flex flex-col items-center px-12 xl:px-24 bg-gradient-to-b from-blue-900 to-fuchsia-900">
+        }} className="flex flex-col items-center px-12 xl:px-24 pt-24">
         <div className="flex items-center justify-center pb-8 mt-16">
           <Badge className="me-2 bg-rose-600">Terbaru&nbsp;✨</Badge>
           <h5 className="text-white">Nama-nama bayi terbaik 2025</h5>
@@ -116,42 +221,9 @@ export default function Home() {
             </button>
           </form>
         </Form>
-        <h5 className="mb-12 text-white">Berikut beberapa nama yang sesuai untuk buah hati Anda</h5>
-        <div className="flex justify-center space-x-6 mb-24">
-          <Card className="w-64 bg-opacity-10 bg-white text-white">
-            <CardHeader className="flex flex-row justify-between items-center">
-              <CardTitle className="flex justify-center items-center">
-                <span className="w-8 h-8 rounded-full bg-blue-400 p-2 me-2 flex items-center justify-center">
-                  👦
-                </span>
-                <span>Adam</span>
-              </CardTitle>
-              <Button variant={"link"} size={"icon"}><Heart color="#fff" fill="#fff" /></Button>
-            </CardHeader>
-            <CardContent>
-              <p>Nama pria pertama / manusia pertama</p>
-            </CardContent>
-            <CardFooter>
-              <p className="text-sm font-light">- Afghanistan</p>
-            </CardFooter>
-          </Card>
-          <Card className="w-64 bg-opacity-10 bg-white text-white">
-            <CardHeader className="flex flex-row justify-between items-center">
-              <CardTitle className="flex justify-center items-center">
-                <span className="w-8 h-8 rounded-full bg-pink-400 p-2 me-2 flex items-center justify-center">
-                  👧
-                </span>
-                <span>Eve</span>
-              </CardTitle>
-              <Button variant={"link"} size={"icon"}><Heart color="#fff" /></Button>
-            </CardHeader>
-            <CardContent>
-              <p>Nama wanita pertama / manusia pertama</p>
-            </CardContent>
-            <CardFooter>
-              <p className="text-sm font-light">- Afghanistan</p>
-            </CardFooter>
-          </Card>
+        <h5 className="mb-6 text-white">Berikut beberapa nama yang sesuai untuk buah hati Anda</h5>
+        <div className="w-full">
+          <Carousel items={cards} />
         </div>
         <h2 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text p-2">Nama-nama bayi terpopuler</h2>
         <Table className="mb-16">
