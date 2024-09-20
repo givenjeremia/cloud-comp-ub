@@ -33,6 +33,9 @@ class BabyNameSeeder {
                             meaning: coa.meaning,
                             origin: coa.origin,
                             sub_origin: coa.sub_origin,
+                            like: '0',
+                            dislike: '0',
+
                         },
                     });                    
     
