@@ -91,34 +91,6 @@ const names: Name[] = [
   },
 ];
 
-export const columns: ColumnDef<Name>[] = [
-  {
-    accessorKey: "nama",
-    accessorFn: (row) => row.name,
-    header: 'Nama',
-  },
-  {
-    accessorKey: "jenisKelamin",
-    accessorFn: (row) => row.name,
-    header: 'Jenis Kelamin',
-  },
-  {
-    accessorKey: "arti",
-    accessorFn: (row) => row.name,
-    header: 'Arti',
-  },
-  {
-    accessorKey: "asal",
-    accessorFn: (row) => row.name,
-    header: 'Asal',
-  },
-  {
-    accessorKey: "jumlahLike",
-    accessorFn: (row) => row.name,
-    header: 'Jumlah Like',
-  },
-]
-
 export default function Home() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
