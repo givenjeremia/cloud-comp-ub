@@ -11,7 +11,7 @@ import path from "path";
 import serveIndex from "serve-index";
 
 import { ApiKeyMiddleware, MulterMiddleware } from "./middlewares";
-import { AuthController } from "./controllers";
+import { AuthController,BabyController } from "./controllers";
 
 class App {
     public app: Application;
@@ -51,7 +51,8 @@ class App {
     public routes(): void {
         // insert routes here
         this.app.use("/", AuthController);
-        // dont change this route (for unknown route, send 404 response)
+        this.app.use("/baby", BabyController);
+        
         this.app.all("*", (req: Request, res: Response) => {
             return res.status(404).json({
                 data: null,
