@@ -58,13 +58,15 @@ model Token {
 }
 
 model BabyName {
-  id          Int      @id @default(autoincrement())
-  uuid        String   @unique @default(uuid())
-  name        String   @db.Text
-  gender      String   @db.Text
-  meaning     String   @db.Text
-  origin      String   @db.Text
+  id          Int       @id @default(autoincrement())
+  uuid        String    @unique @default(uuid())
+  name        String    @db.Text
+  gender      String    @db.Text
+  meaning     String    @db.Text
+  origin      String    @db.Text
   sub_origin  String?   @db.Text
+  like        String?   @db.Text
+  dislike     String?   @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
