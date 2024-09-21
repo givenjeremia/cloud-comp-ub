@@ -191,14 +191,14 @@ export default function Home() {
           duration: 0.8,
           ease: "easeInOut",
         }} className="flex flex-col items-center px-12 xl:px-24 pt-24">
-        <div className="flex items-center justify-center pb-8 mt-16">
+        <div className="flex items-center justify-center pb-8 lg:pb-0 mt-16">
           <Badge className="me-2 bg-gradient-to-r from-rose-600 to-fuchsia-600">Terbaru&nbsp;✨</Badge>
           <h5 className="text-white">Nama-nama bayi terbaik 2025</h5>
         </div>
         <div className="w-full flex flex-col lg:flex-row justify-center items-center">
           <div className="lg:w-3/5">
             <div className="w-full mb-4">
-              <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-white inline-block text-transparent bg-clip-text lg:text-left pb-2">Dapatkan nama terbaik untuk buah hati Anda sekarang juga</h1>
+              <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-white inline-block text-transparent bg-clip-text lg:text-left pb-2 pe-8">Dapatkan nama terbaik untuk buah hati Anda sekarang juga</h1>
             </div>
             <h2 className="text-base font-light mb-0 text-white text-center lg:text-left">Kami memiliki lebih dari 80 ribu nama yang bisa Anda pilih</h2>
           </div>
