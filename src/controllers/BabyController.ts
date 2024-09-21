@@ -146,7 +146,7 @@ class BabyController extends Controller {
               
             const randomBabyNames = babyNames
                 .sort(() => 0.5 - Math.random()) 
-                .slice(0, 4);                  
+                .slice(0, 10);                  
               
               
             return super.success(res, "success", randomBabyNames);
