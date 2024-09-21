@@ -14,18 +14,6 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
 import { Carousel } from "@/components/ui/apple-cards-carousel";
 import React, { useEffect, useState } from "react";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
 // import React from "react";
 
 import OriginSelect from "@/components/ui/OriginSelect";
@@ -37,7 +25,7 @@ const FormSchema = z.object({
     }),
   origin: z
     .string({
-      required_error: "Mohon pilih salah satu negara asal.",
+      required_error: "Mohon pilih salah satu asal nama.",
     }),
 })
 
@@ -96,14 +84,6 @@ export type Name = {
 // ];
 
 export default function Home() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
-  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   })
@@ -146,13 +126,13 @@ export default function Home() {
     };
 
     fetchOrigins();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const fetchNames = async () => {
       setLoading(true);
       setError(null);
-  
+
       try {
         const response = await fetch("https://namabuahhati.com/service/api/baby/data-by-like/", {
           method: "GET",
@@ -161,13 +141,13 @@ export default function Home() {
             "api-key": `ubaya-baby-backend`,
           },
         });
-  
+
         if (!response.ok) {
           throw new Error("Failed to fetch names");
         }
-  
+
         const responseData = await response.json();
-        
+
         // Extract the 'data' array from the response
         if (Array.isArray(responseData.data)) {
           setNames(responseData.data); // Set the names state with the data array
@@ -184,7 +164,7 @@ export default function Home() {
         setLoading(false);
       }
     };
-  
+
     fetchNames();
   }, []);
 
@@ -224,9 +204,9 @@ export default function Home() {
           </span>
           <span>{name.name}</span>
         </CardTitle>
-        <Button 
-          variant={"link"} 
-          size={"icon"} 
+        <Button
+          variant={"link"}
+          size={"icon"}
           onClick={() => handleLike(name.uuid)}
         >
           <Heart color="#fff" />
@@ -261,13 +241,13 @@ export default function Home() {
       const responseData = await response.json();  // Parse the response data
       setNames(responseData);  // Update state with API response (list of names)
     } catch (err) {
-        if (err instanceof Error) {
-          // If the error is an instance of Error, access its message
-          setError(err.message);
-        } else {
-          // Handle any other types of errors (rare case)
-          setError("An unknown error occurred");
-        }
+      if (err instanceof Error) {
+        // If the error is an instance of Error, access its message
+        setError(err.message);
+      } else {
+        // Handle any other types of errors (rare case)
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);  // Stop loading
     }
@@ -291,7 +271,7 @@ export default function Home() {
         </div>
         <h2 className="text-base font-light mb-24 text-white">Kami memiliki lebih dari 80 ribu nama yang bisa Anda pilih</h2>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6 mb-24 sm:flex sm:items-center sm:justify-center sm:space-x-4 sm:space-y-0">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6 mb-24 sm:flex sm:items-start sm:justify-center sm:space-x-4 sm:space-y-0">
             <FormField
               control={form.control}
               name="gender"
