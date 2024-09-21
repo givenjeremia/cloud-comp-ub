@@ -30,104 +30,26 @@ const FormSchema = z.object({
 })
 
 export type Name = {
-  name: string,
   uuid: string,
+  name: string,
   gender: 'M' | 'F',
   meaning: string,
   origin: string,
   like: number,
 }
 
-// const names: Name[] = [
-//   {
-//     name: "Adam",
-//     gender: "M",
-//     meaning: "Nama pria pertama / manusia pertama",
-//     origin: "Africa",
-//     likes: 456,
-//   },
-//   {
-//     name: "Eve",
-//     gender: "F",
-//     meaning: "Nama wanita pertama / manusia pertama",
-//     origin: "Africa",
-//     likes: 423,
-//   },
-//   {
-//     name: "Adam",
-//     gender: "M",
-//     meaning: "Nama pria pertama / manusia pertama",
-//     origin: "Africa",
-//     likes: 456,
-//   },
-//   {
-//     name: "Eve",
-//     gender: "F",
-//     meaning: "Nama wanita pertama / manusia pertama",
-//     origin: "Africa",
-//     likes: 423,
-//   },
-//   {
-//     name: "Adam",
-//     gender: "M",
-//     meaning: "Nama pria pertama / manusia pertama",
-//     origin: "Africa",
-//     likes: 456,
-//   },
-//   {
-//     name: "Eve",
-//     gender: "F",
-//     meaning: "Nama wanita pertama / manusia pertama",
-//     origin: "Africa",
-//     likes: 423,
-//   },
-// ];
-
 export default function Home() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   })
 
+  const [popularNames, setPopularNames] = useState<Name[]>([]);
   const [names, setNames] = useState<Name[]>([]);
   const [loading, setLoading] = useState(false);
+  const [likedNames, setLikedNames] = useState<{ [uuid: string]: boolean }>({});
   const [error, setError] = useState<string | null>(null);
 
-  const [origins, setOrigins] = useState<string[]>([]);
-
-  useEffect(() => {
-    const fetchOrigins = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await fetch("https://namabuahhati.com/service/api/baby/data-origin/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer YOUR_API_KEY`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch origins");
-        }
-
-        const responseData = await response.json();
-        setOrigins(responseData);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // fetchOrigins();
-  }, []);
-
+  
   useEffect(() => {
     const fetchNames = async () => {
       setLoading(true);
@@ -150,7 +72,7 @@ export default function Home() {
 
         // Extract the 'data' array from the response
         if (Array.isArray(responseData.data)) {
-          setNames(responseData.data); // Set the names state with the data array
+          setPopularNames(responseData.data); // Set the names state with the data array
         } else {
           throw new Error("Response data is not an array");
         }
@@ -178,12 +100,14 @@ export default function Home() {
         },
       });
 
+      setLikedNames((prevState) => ({
+        ...prevState,
+        [uuid]: true, // Set the liked state to true
+      }));
+
       if (!response.ok) {
         throw new Error("Failed to like");
       }
-
-      const responseData = await response.json();
-      console.log("Name liked:", responseData);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -196,7 +120,7 @@ export default function Home() {
   };
 
   const cards = names.map((name) => (
-    <Card key={name.name} className="w-64 bg-opacity-10 bg-white text-white">
+    <Card key={name.name} className="w-64 bg-opacity-10 bg-white text-white text-left h-56 flex flex-col justify-between">
       <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="flex justify-center items-center">
           <span className={`${name.gender == 'M' ? 'bg-blue-400' : 'bg-pink-400'} w-8 h-8 rounded-full p-2 me-2 flex items-center justify-center`}>
@@ -209,7 +133,7 @@ export default function Home() {
           size={"icon"}
           onClick={() => handleLike(name.uuid)}
         >
-          <Heart color="#fff" />
+          <Heart color="#fff" fill={likedNames[name.uuid] ? '#fff' : 'none'} />
         </Button>
       </CardHeader>
       <CardContent>
@@ -308,10 +232,14 @@ export default function Home() {
             </button>
           </form>
         </Form>
-        <h5 className="mb-6 text-white">Berikut beberapa nama yang sesuai untuk buah hati Anda</h5>
-        <div className="w-full">
-          <Carousel items={cards} />
+        {names.length > 0 ? (
+        <div className="text-center">
+          <h5 className="mb-6 text-white">Berikut beberapa nama yang sesuai untuk buah hati Anda</h5>
+          <div className="w-full">
+            <Carousel items={cards} />
+          </div>
         </div>
+      ) :(null)}
         <h2 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text p-2">Nama-nama bayi terpopuler</h2>
         <Table className="mb-16">
           <TableHeader>
@@ -324,7 +252,7 @@ export default function Home() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {names.map((name) => (
+            {popularNames.map((name) => (
               <TableRow key={name.name}>
                 <TableCell className="font-medium">{name.name}</TableCell>
                 <TableCell className="font-medium">{name.gender}</TableCell>
