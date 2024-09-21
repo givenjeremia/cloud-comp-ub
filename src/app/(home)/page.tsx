@@ -225,11 +225,11 @@ export default function Home() {
     // Request data
     console.log(data)
     try {
-      const response = await fetch("https://namabuahhati.com/service/api/baby/", {
+      const response = await fetch("https://namabuahhati.com/service/api/baby/random-baby-name/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ubaya-baby-backend`,
+          "api-key": `ubaya-baby-backend`,
         },
         body: JSON.stringify(data),  // Send form data to API
       });
@@ -239,7 +239,11 @@ export default function Home() {
       }
 
       const responseData = await response.json();  // Parse the response data
-      setNames(responseData);  // Update state with API response (list of names)
+      if (Array.isArray(responseData.data)) {
+        setNames(responseData.data); // Set the names state with the data array
+      } else {
+        throw new Error("Response data is not an array");
+      }
     } catch (err) {
       if (err instanceof Error) {
         // If the error is an instance of Error, access its message
@@ -296,7 +300,7 @@ export default function Home() {
               control={form.control}
               name="origin"
               render={({ field }) => (
-                <OriginSelect field={form.getFieldState("origin")} />
+                <OriginSelect field={field} />
               )}
             />
             <button type="submit" className="px-4 py-2 rounded-md bg-pink-950 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200">
@@ -326,7 +330,7 @@ export default function Home() {
                 <TableCell className="font-medium">{name.gender}</TableCell>
                 <TableCell>{name.meaning}</TableCell>
                 <TableCell>{name.origin}</TableCell>
-                <TableCell>{name.likes}</TableCell>
+                <TableCell>{name.like}</TableCell>
               </TableRow>
             ))}
           </TableBody>
