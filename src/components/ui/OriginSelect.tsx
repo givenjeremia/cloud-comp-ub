@@ -4,7 +4,10 @@ import { FormItem, FormControl, FormMessage } from "@/components/ui/form";
 import { FieldValues, ControllerRenderProps } from "react-hook-form";
 
 interface OriginSelectProps {
-  field: ControllerRenderProps<FieldValues, string>;
+  field: ControllerRenderProps<{
+    gender: string;
+    origin: string;
+}, 'origin'>;
 }
 
 function OriginSelect({ field }: OriginSelectProps) {
