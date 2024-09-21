@@ -55,13 +55,13 @@ class BabyController extends Controller {
             });
 
    
-            const translatedData = await Promise.all(data.map(async (item) => {
-                const translatedNama = await translate(item.meaning, { to: 'id' });
-                return {
-                    ...item,
-                    meaning: translatedNama.text
-                };
-            }));
+            // const translatedData = await Promise.all(data.map(async (item) => {
+            //     const translatedNama = await translate(item.meaning, { to: 'id' });
+            //     return {
+            //         ...item,
+            //         meaning: translatedNama.text
+            //     };
+            // }));
 
             const totalCount = await prisma.babyName.count();
             const totalPages = Math.ceil(totalCount / pageSize);
@@ -77,7 +77,7 @@ class BabyController extends Controller {
             const prevLink = page > 1 ? createLink(page - 1) : null;
 
             return super.success(res, "success", {
-                data: translatedData,
+                data: data,
                 pagination: {
                     currentPage: page,
                     pageSize,
