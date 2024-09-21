@@ -13,6 +13,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
 import { Carousel } from "@/components/ui/apple-cards-carousel";
+import React, { useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -25,7 +26,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import React from "react";
+// import React from "react";
+
+import OriginSelect from "@/components/ui/OriginSelect";
 
 const FormSchema = z.object({
   gender: z
@@ -40,56 +43,57 @@ const FormSchema = z.object({
 
 export type Name = {
   name: string,
+  uuid: string,
   gender: 'M' | 'F',
   meaning: string,
   origin: string,
   likes: number,
 }
 
-const names: Name[] = [
-  {
-    name: "Adam",
-    gender: "M",
-    meaning: "Nama pria pertama / manusia pertama",
-    origin: "Africa",
-    likes: 456,
-  },
-  {
-    name: "Eve",
-    gender: "F",
-    meaning: "Nama wanita pertama / manusia pertama",
-    origin: "Africa",
-    likes: 423,
-  },
-  {
-    name: "Adam",
-    gender: "M",
-    meaning: "Nama pria pertama / manusia pertama",
-    origin: "Africa",
-    likes: 456,
-  },
-  {
-    name: "Eve",
-    gender: "F",
-    meaning: "Nama wanita pertama / manusia pertama",
-    origin: "Africa",
-    likes: 423,
-  },
-  {
-    name: "Adam",
-    gender: "M",
-    meaning: "Nama pria pertama / manusia pertama",
-    origin: "Africa",
-    likes: 456,
-  },
-  {
-    name: "Eve",
-    gender: "F",
-    meaning: "Nama wanita pertama / manusia pertama",
-    origin: "Africa",
-    likes: 423,
-  },
-];
+// const names: Name[] = [
+//   {
+//     name: "Adam",
+//     gender: "M",
+//     meaning: "Nama pria pertama / manusia pertama",
+//     origin: "Africa",
+//     likes: 456,
+//   },
+//   {
+//     name: "Eve",
+//     gender: "F",
+//     meaning: "Nama wanita pertama / manusia pertama",
+//     origin: "Africa",
+//     likes: 423,
+//   },
+//   {
+//     name: "Adam",
+//     gender: "M",
+//     meaning: "Nama pria pertama / manusia pertama",
+//     origin: "Africa",
+//     likes: 456,
+//   },
+//   {
+//     name: "Eve",
+//     gender: "F",
+//     meaning: "Nama wanita pertama / manusia pertama",
+//     origin: "Africa",
+//     likes: 423,
+//   },
+//   {
+//     name: "Adam",
+//     gender: "M",
+//     meaning: "Nama pria pertama / manusia pertama",
+//     origin: "Africa",
+//     likes: 456,
+//   },
+//   {
+//     name: "Eve",
+//     gender: "F",
+//     meaning: "Nama wanita pertama / manusia pertama",
+//     origin: "Africa",
+//     likes: 423,
+//   },
+// ];
 
 export const columns: ColumnDef<Name>[] = [
   {
@@ -132,6 +136,113 @@ export default function Home() {
     resolver: zodResolver(FormSchema),
   })
 
+  const [names, setNames] = useState<Name[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const [origins, setOrigins] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchOrigins = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch("https://namabuahhati.com/service/api/baby/data-origin/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer YOUR_API_KEY`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch origins");
+        }
+
+        const responseData = await response.json();
+        setOrigins(responseData);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrigins();
+  }, []); 
+
+  useEffect(() => {
+    const fetchNames = async () => {
+      setLoading(true);
+      setError(null);
+  
+      try {
+        const response = await fetch("https://namabuahhati.com/service/api/baby/data-by-like/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "api-key": `ubaya-baby-backend`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch names");
+        }
+  
+        const responseData = await response.json();
+        
+        // Extract the 'data' array from the response
+        if (Array.isArray(responseData.data)) {
+          setNames(responseData.data); // Set the names state with the data array
+        } else {
+          throw new Error("Response data is not an array");
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchNames();
+  }, []);
+
+  const handleLike = async (uuid: string) => {
+    try {
+      const response = await fetch(`https://namabuahhati.com/service/api/baby/like-baby-name/${uuid}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": `ubaya-baby-backend`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to like");
+      }
+
+      const responseData = await response.json();
+      console.log("Name liked:", responseData);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    } finally {
+      // setLoading(false);
+    }
+  };
+
   const cards = names.map((name) => (
     <Card key={name.name} className="w-64 bg-opacity-10 bg-white text-white">
       <CardHeader className="flex flex-row justify-between items-center">
@@ -141,7 +252,13 @@ export default function Home() {
           </span>
           <span>{name.name}</span>
         </CardTitle>
-        <Button variant={"link"} size={"icon"}><Heart color="#fff" /></Button>
+        <Button 
+          variant={"link"} 
+          size={"icon"} 
+          onClick={() => handleLike(name.uuid)}
+        >
+          <Heart color="#fff" />
+        </Button>
       </CardHeader>
       <CardContent>
         <p>{name.meaning}</p>
@@ -152,9 +269,36 @@ export default function Home() {
     </Card>
   ));
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     // Request data
     console.log(data)
+    try {
+      const response = await fetch("https://namabuahhati.com/service/api/baby/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ubaya-baby-backend`,
+        },
+        body: JSON.stringify(data),  // Send form data to API
+      });
+
+      if (!response.ok) {
+        throw new Error("Something went wrong with the API request");
+      }
+
+      const responseData = await response.json();  // Parse the response data
+      setNames(responseData);  // Update state with API response (list of names)
+    } catch (err) {
+        if (err instanceof Error) {
+          // If the error is an instance of Error, access its message
+          setError(err.message);
+        } else {
+          // Handle any other types of errors (rare case)
+          setError("An unknown error occurred");
+        }
+    } finally {
+      setLoading(false);  // Stop loading
+    }
   }
 
   return (
@@ -200,24 +344,11 @@ export default function Home() {
               control={form.control}
               name="origin"
               render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Asal Nama" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="African">Afrika</SelectItem>
-                      <SelectItem value="Anglo">Anglo</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
+                <OriginSelect field={form.getFieldState("origin")} />
               )}
             />
             <button type="submit" className="px-4 py-2 rounded-md bg-pink-950 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200">
-              Cari Nama
+              {loading ? "Mencari..." : "Cari Nama"}
             </button>
           </form>
         </Form>
