@@ -228,6 +228,7 @@ export default function Home() {
                     <SelectContent>
                       <SelectItem value="M">Laki-laki</SelectItem>
                       <SelectItem value="F">Perempuan</SelectItem>
+                      <SelectItem value="">Unisex</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
