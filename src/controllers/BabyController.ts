@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import Controller from "./Controller";
 import type { Request, Response } from "express";
 import { Router } from "express";
@@ -45,15 +45,44 @@ class BabyController extends Controller {
         try {
             const page = parseInt(req.query.page as string) || 1; 
             const pageSize = parseInt(req.query.pageSize as string) || 10;
-
-            const data = await prisma.babyName.findMany({
-                orderBy: {
-                    like: 'desc',
-                },
-                skip: (page - 1) * pageSize, 
-                take: pageSize,
-            });
-
+            const filter = req.query.query || "";
+        
+            // const whereClause: Prisma.BabyNameWhereInput | undefined = filter
+            // ? {
+            //     OR: [
+            //       { name: { contains: filter, mode: 'insensitive' } },
+            //       { meaning: { contains: filter, mode: 'insensitive' } },
+            //       { origin: { contains: filter, mode: 'insensitive' } },
+            //     ],
+            //   }
+            // : undefined; // Use undefined for no filtering
+            var data;
+            if (filter) {
+                data = await prisma.babyName.findMany({
+                    where: {
+                        OR: [
+                            { name: { contains: filter as string } },
+                            { meaning: { contains: filter as string } },
+                            { origin: { contains: filter as string} },
+                        ],
+                    },
+                    orderBy: {
+                        like: 'desc', // Ensure 'like' is a valid field in your schema
+                    },
+                    skip: (page - 1) * pageSize,
+                    take: pageSize,
+                });
+            } else {
+                data = await prisma.babyName.findMany({
+                    orderBy: {
+                        like: 'desc',
+                    },
+                    skip: (page - 1) * pageSize,
+                    take: pageSize,
+                });
+            }
+            
+        
    
             // const translatedData = await Promise.all(data.map(async (item) => {
             //     const translatedNama = await translate(item.meaning, { to: 'id' });
