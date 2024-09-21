@@ -92,21 +92,21 @@ class BabyController extends Controller {
     public async likeBabyName(req: Request, res: Response): Promise<Response> {
         try {
             const { uuid } = req.params;
-            const babyName = await prisma.babyName.findUnique({
-                where: { uuid: uuid },
-                select: { like: true },
-              });
+            // const babyName = await prisma.babyName.findUnique({
+            //     where: { uuid: uuid },
+            //     select: { like: true },
+            //   });
               
-            const currentLikes = parseInt(babyName?.like ?? '0', 10);
+            // const currentLikes = parseInt(babyName?.like ?? '0', 10);
               
-            const data = await prisma.babyName.update({
-                where: { uuid: uuid },
-                data: {
-                  like: (currentLikes + 1).toString(),
-                },
-            });
+            // const data = await prisma.babyName.update({
+            //     where: { uuid: uuid },
+            //     data: {
+            //       like: (currentLikes + 1).toString(),
+            //     },
+            // });
               
-            return super.success(res, "success updated", data);
+            return super.success(res, "success updated", {});
         } catch (error: any) {
             console.error(error.message);
             return super.error(res, error.message);

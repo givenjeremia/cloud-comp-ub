@@ -65,8 +65,8 @@ model BabyName {
   meaning     String    @db.Text
   origin      String    @db.Text
   sub_origin  String?   @db.Text
-  like        String?   @db.Text
-  dislike     String?   @db.Text
+  like        Int?
+  dislike     Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
