@@ -4,6 +4,7 @@ import type { Request, Response } from "express";
 import { Router } from "express";
 import { body, validationResult } from "express-validator";
 import { AuthMiddleware } from "../middlewares";
+import { translate } from '@vitalets/google-translate-api';
 
 const prisma = new PrismaClient();
 
@@ -42,20 +43,57 @@ class BabyController extends Controller {
 
     public async DataByLike(req: Request, res: Response): Promise<Response> {
         try {
+            const page = parseInt(req.query.page as string) || 1; 
+            const pageSize = parseInt(req.query.pageSize as string) || 10;
+
             const data = await prisma.babyName.findMany({
                 orderBy: {
-                  like: {
-                    sort: 'desc',
-                  }
+                    like: 'desc',
                 },
-                take: 10
-              });
-            return super.success(res, "success", data);
+                skip: (page - 1) * pageSize, 
+                take: pageSize,
+            });
+
+   
+            const translatedData = await Promise.all(data.map(async (item) => {
+                const translatedNama = await translate(item.meaning, { to: 'id' });
+                return {
+                    ...item,
+                    meaning: translatedNama.text
+                };
+            }));
+
+            const totalCount = await prisma.babyName.count();
+            const totalPages = Math.ceil(totalCount / pageSize);
+
+            const createLink = (newPage: number) => {
+                const query = new URLSearchParams(req.query as any);
+                query.set('page', newPage.toString());
+                query.set('pageSize', pageSize.toString());
+                return `?${query.toString()}`; 
+            };
+
+            const nextLink = page < totalPages ? createLink(page + 1) : null;
+            const prevLink = page > 1 ? createLink(page - 1) : null;
+
+            return super.success(res, "success", {
+                data: translatedData,
+                pagination: {
+                    currentPage: page,
+                    pageSize,
+                    totalCount,
+                    totalPages,
+                    nextLink,
+                    prevLink,
+                },
+            });
         } catch (error: any) {
             console.error(error.message);
             return super.error(res, error.message);
         }
     }
+
+    
     private validateGetRandomBabyName = [
         body("gender", "Gender is required").notEmpty(),
         body("origin", "Origin required").notEmpty(),
@@ -92,21 +130,15 @@ class BabyController extends Controller {
     public async likeBabyName(req: Request, res: Response): Promise<Response> {
         try {
             const { uuid } = req.params;
-            // const babyName = await prisma.babyName.findUnique({
-            //     where: { uuid: uuid },
-            //     select: { like: true },
-            //   });
-              
-            // const currentLikes = parseInt(babyName?.like ?? '0', 10);
-              
-            // const data = await prisma.babyName.update({
-            //     where: { uuid: uuid },
-            //     data: {
-            //       like: (currentLikes + 1).toString(),
-            //     },
-            // });
-              
-            return super.success(res, "success updated", {});
+            const data = await prisma.babyName.update({
+                where: { uuid: uuid },
+                data: {
+                  like: {
+                    increment: 1,
+                  },
+                },
+            });
+            return super.success(res, "success updated", data);
         } catch (error: any) {
             console.error(error.message);
             return super.error(res, error.message);
