@@ -49,7 +49,7 @@ export default function Home() {
   const [likedNames, setLikedNames] = useState<{ [uuid: string]: boolean }>({});
   const [error, setError] = useState<string | null>(null);
 
-  
+
   useEffect(() => {
     const fetchNames = async () => {
       setLoading(true);
@@ -69,6 +69,7 @@ export default function Home() {
         }
 
         const responseData = await response.json();
+        console.log(responseData)
 
         // Extract the 'data' array from the response
         if (Array.isArray(responseData.data)) {
@@ -191,15 +192,27 @@ export default function Home() {
           ease: "easeInOut",
         }} className="flex flex-col items-center px-12 xl:px-24 pt-24">
         <div className="flex items-center justify-center pb-8 mt-16">
-          <Badge className="me-2 bg-rose-600">Terbaru&nbsp;✨</Badge>
+          <Badge className="me-2 bg-gradient-to-r from-rose-600 to-fuchsia-600">Terbaru&nbsp;✨</Badge>
           <h5 className="text-white">Nama-nama bayi terbaik 2025</h5>
         </div>
-        <div className="w-full xl:w-3/5 mb-4">
-          <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-white inline-block text-transparent bg-clip-text p-2">Dapatkan nama terbaik untuk buah hati Anda sekarang juga</h1>
+        <div className="w-full flex flex-col lg:flex-row justify-center items-center">
+          <div className="lg:w-3/5">
+            <div className="w-full mb-4">
+              <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-white inline-block text-transparent bg-clip-text lg:text-left pb-2">Dapatkan nama terbaik untuk buah hati Anda sekarang juga</h1>
+            </div>
+            <h2 className="text-base font-light mb-0 text-white text-center lg:text-left">Kami memiliki lebih dari 80 ribu nama yang bisa Anda pilih</h2>
+          </div>
+          <div className="lg:w-2/5">
+            <Image
+              src="/babies.png"
+              width={500}
+              height={500}
+              alt="Picture of the author"
+            />
+          </div>
         </div>
-        <h2 className="text-base font-light mb-24 text-white">Kami memiliki lebih dari 80 ribu nama yang bisa Anda pilih</h2>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6 mb-24 sm:flex sm:items-start sm:justify-center sm:space-x-4 sm:space-y-0">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6 mb-24 flex flex-col sm:flex sm:flex-row sm:items-center sm:justify-center sm:space-x-4 sm:space-y-0">
             <FormField
               control={form.control}
               name="gender"
@@ -227,20 +240,21 @@ export default function Home() {
                 <OriginSelect field={field} />
               )}
             />
-            <button type="submit" className="px-4 py-2 rounded-md bg-pink-950 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200">
+            
+            <button type="submit" className="px-4 py-2 rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200">
               {loading ? "Mencari..." : "Cari Nama"}
             </button>
           </form>
         </Form>
         {names.length > 0 ? (
-        <div className="text-center">
-          <h5 className="mb-6 text-white">Berikut beberapa nama yang sesuai untuk buah hati Anda</h5>
-          <div className="w-full">
-            <Carousel items={cards} />
+          <div className="text-center w-full mb-5">
+            <h5 className="mb-6 text-white">Berikut beberapa nama yang sesuai untuk buah hati Anda</h5>
+            <div className="w-full">
+              <Carousel items={cards} />
+            </div>
           </div>
-        </div>
-      ) :(null)}
-        <h2 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text p-2">Nama-nama bayi terpopuler</h2>
+        ) : (null)}
+        <h2 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text text-center p-2">Nama-nama bayi terpopuler</h2>
         <Table className="mb-16">
           <TableHeader>
             <TableRow>
