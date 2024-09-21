@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 // import React from "react";
 
 import OriginSelect from "@/components/ui/OriginSelect";
+import { BabyDataTable } from "./components/LikeTable";
 
 const FormSchema = z.object({
   gender: z
@@ -254,8 +255,14 @@ export default function Home() {
             </div>
           </div>
         ) : (null)}
+       
         <h2 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text text-center p-2">Nama-nama bayi terpopuler</h2>
-        <Table className="mb-16">
+        <Card className="w-full p-5 mb-16">
+          <div className="w-full">
+            <BabyDataTable />
+          </div>
+        </Card>
+        {/* <Table className="mb-16">
           <TableHeader>
             <TableRow>
               <TableHead>Nama</TableHead>
@@ -276,7 +283,8 @@ export default function Home() {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </Table> */}
+    
       </motion.div>
     </AuroraBackground>
   );
