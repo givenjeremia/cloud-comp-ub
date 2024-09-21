@@ -35,7 +35,7 @@ export type Name = {
   gender: 'M' | 'F',
   meaning: string,
   origin: string,
-  likes: number,
+  like: number,
 }
 
 // const names: Name[] = [
@@ -125,7 +125,7 @@ export default function Home() {
       }
     };
 
-    fetchOrigins();
+    // fetchOrigins();
   }, []);
 
   useEffect(() => {
