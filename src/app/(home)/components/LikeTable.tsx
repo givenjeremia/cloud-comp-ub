@@ -135,18 +135,18 @@ export function BabyDataTable() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-16">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Silahkan Mencari..."
+          placeholder="Silahkan mencari..."
           value={filter} // Use filter state directly
           onChange={(event) => setFilter(event.target.value)} // Update filter state
-          className="max-w-sm"
+          className="max-w-sm text-white"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
+            <Button variant={'outline'} className="ml-auto bg-transparent text-white">
+              Kolom <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -167,13 +167,13 @@ export function BabyDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
-        <Table>
+        <Table className="bg-white bg-opacity-5">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-gray-800">
+                    <TableHead key={header.id} className="text-white font-extrabold">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -194,7 +194,7 @@ export function BabyDataTable() {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-gray-800">
+                    <TableCell key={cell.id} className="text-slate-100">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -217,17 +217,19 @@ export function BabyDataTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {((page - 1) * pageSize) + 1} - {Math.min(page * pageSize, totalCount)} of {totalCount} Data.
+        <div className="flex-1 text-sm text-white">
+          {((page - 1) * pageSize) + 1} - {Math.min(page * pageSize, totalCount)} dari {totalCount} nama.
         </div>
         <div className="space-x-2">
           <Button
+          className="bg-gradient-to-r from-pink-600 to-fuchsia-600"
             onClick={() => setPage((old) => Math.max(old - 1, 1))}
             disabled={page === 1}
           >
             Sebelumnya
           </Button>
           <Button
+          className="bg-gradient-to-r from-pink-600 to-fuchsia-600"
             onClick={() => setPage((old) => old + 1)}
             disabled={data.length < pageSize}
           >

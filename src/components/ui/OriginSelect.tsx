@@ -7,7 +7,8 @@ interface OriginSelectProps {
   field: ControllerRenderProps<{
     gender: string;
     origin: string;
-}, 'origin'>;
+    firstLetter: string;
+  }, 'origin'>;
 }
 
 function OriginSelect({ field }: OriginSelectProps) {
@@ -56,8 +57,7 @@ function OriginSelect({ field }: OriginSelectProps) {
           </SelectTrigger>
         </FormControl>
         <SelectContent>
-          {loading && <SelectItem value="loading" disabled>Loading...</SelectItem>}
-          {error && <SelectItem value="error" disabled>Error loading origins</SelectItem>}
+          <SelectItem value="all">Semua</SelectItem>
           {!loading && !error && origins.map((origin, index) => (
             <SelectItem key={index} value={origin}>{origin}</SelectItem>
           ))}

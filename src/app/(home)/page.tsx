@@ -18,6 +18,7 @@ import React, { useEffect, useState } from "react";
 
 import OriginSelect from "@/components/ui/OriginSelect";
 import { BabyDataTable } from "./components/LikeTable";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const FormSchema = z.object({
   gender: z
@@ -27,6 +28,10 @@ const FormSchema = z.object({
   origin: z
     .string({
       required_error: "Mohon pilih salah satu asal nama.",
+    }),
+  firstLetter: z
+    .string({
+      required_error: "Mohon pilih salah satu huruf depan.",
     }),
 })
 
@@ -149,7 +154,7 @@ export default function Home() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     // Request data
-    console.log(data)
+    console.log(JSON.stringify(data));
     try {
       const response = await fetch("https://namabuahhati.com/service/api/baby/random-baby-name/", {
         method: "POST",
@@ -191,17 +196,17 @@ export default function Home() {
           delay: 0.3,
           duration: 0.8,
           ease: "easeInOut",
-        }} className="flex flex-col items-center px-12 xl:px-24 pt-24">
+        }} className="flex flex-col items-center px-12 xl:px-24 lg:pt-12">
         <div className="flex items-center justify-center pb-8 lg:pb-0 mt-16">
-          <Badge className="me-2 bg-gradient-to-r from-rose-600 to-fuchsia-600">Terbaru&nbsp;✨</Badge>
+          <Badge className="me-2 bg-gradient-to-r from-blue-600 to-indigo-600">Terbaru&nbsp;✨</Badge>
           <h5 className="text-white">Nama-nama bayi terbaik 2025</h5>
         </div>
         <div className="w-full flex flex-col lg:flex-row justify-center items-center">
           <div className="lg:w-3/5">
             <div className="w-full mb-4">
-              <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-white inline-block text-transparent bg-clip-text lg:text-left pb-2 pe-8">Dapatkan nama terbaik untuk buah hati Anda sekarang juga</h1>
+              <TextGenerateEffect words="Dapatkan nama terbaik untuk Buah Hati Anda sekarang juga" />
             </div>
-            <h2 className="text-base font-light mb-0 text-white text-center lg:text-left">Kami memiliki lebih dari 80 ribu nama yang bisa Anda pilih</h2>
+            <h2 className="text-base font-light mb-0 text-white text-center lg:text-left">Kami memiliki lebih dari <span className="font-extrabold">80.000</span> nama yang bisa Anda pilih</h2>
           </div>
           <div className="lg:w-2/5">
             <Image
@@ -213,7 +218,7 @@ export default function Home() {
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6 mb-24 flex flex-col sm:flex sm:flex-row sm:items-center sm:justify-center sm:space-x-4 sm:space-y-0">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6 mb-24 flex flex-col sm:flex sm:flex-row sm:items-start sm:justify-center sm:space-x-4 sm:space-y-0">
             <FormField
               control={form.control}
               name="gender"
@@ -226,9 +231,9 @@ export default function Home() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
+                      <SelectItem value="all">Semua</SelectItem>
                       <SelectItem value="M">Laki-laki</SelectItem>
                       <SelectItem value="F">Perempuan</SelectItem>
-                      <SelectItem value="">Unisex</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -242,9 +247,35 @@ export default function Home() {
                 <OriginSelect field={field} />
               )}
             />
-            
-            <button type="submit" className="px-4 py-2 rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200">
-              {loading ? "Mencari..." : "Cari Nama"}
+            <FormField
+              control={form.control}
+              name="firstLetter"
+              render={({ field }) => (
+                <FormItem>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Huruf Depan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="all">Semua</SelectItem>
+                      {Array.from(Array(26)).map((_, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        return (
+                          <SelectItem key={letter} value={letter}>
+                            {letter}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <button type="submit" className="px-4 rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200 h-9">
+              {loading ? "Mencari..." : "Dapatkan Nama"}
             </button>
           </form>
         </Form>
@@ -256,13 +287,10 @@ export default function Home() {
             </div>
           </div>
         ) : (null)}
-       
+
         <h2 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text text-center p-2">Nama-nama bayi terpopuler</h2>
-        <Card className="w-full p-5 mb-16">
-          <div className="w-full">
-            <BabyDataTable />
-          </div>
-        </Card>
+
+        <BabyDataTable />
         {/* <Table className="mb-16">
           <TableHeader>
             <TableRow>
@@ -285,7 +313,7 @@ export default function Home() {
             ))}
           </TableBody>
         </Table> */}
-    
+
       </motion.div>
     </AuroraBackground>
   );

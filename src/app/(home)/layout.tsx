@@ -18,7 +18,7 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
       </head>
-      <body className={`${inter.className} bg-gradient-to-b from-blue-900 to-fuchsia-900`}>{children}</body>
+      <body className={`${inter.className} bg-gradient-to-b from-blue-950 to-fuchsia-950`}>{children}</body>
     </html>
   );
 }
