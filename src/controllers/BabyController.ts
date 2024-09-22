@@ -137,8 +137,8 @@ class BabyController extends Controller {
 
             const babyNames = await prisma.babyName.findMany({
                 where: {
-                  origin: req.body.origin,
-                  gender: req.body.gender,
+                  ...(req.body.origin !== 'all' ? { origin: req.body.origin } : {}),
+                  ...(req.body.gender !== 'all' ? {  gender: req.body.gender } : {}),
                   ...(firstLetter && firstLetter !== 'all' ? { name: { startsWith: firstLetter } } : {}),
                   ...( meaning ? { meaning: meaning } : {}),
                 },
