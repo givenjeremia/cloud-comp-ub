@@ -222,14 +222,14 @@ export function BabyDataTable() {
         </div>
         <div className="space-x-2">
           <Button
-          className="bg-gradient-to-r from-pink-600 to-fuchsia-600"
+          className="bg-gradient-to-r from-purple-600 to-fuchsia-600"
             onClick={() => setPage((old) => Math.max(old - 1, 1))}
             disabled={page === 1}
           >
             Sebelumnya
           </Button>
           <Button
-          className="bg-gradient-to-r from-pink-600 to-fuchsia-600"
+          className="bg-gradient-to-r from-fuchsia-600 to-purple-600"
             onClick={() => setPage((old) => old + 1)}
             disabled={data.length < pageSize}
           >
