@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { FormItem, FormControl, FormMessage } from "@/components/ui/form";
+import { FormItem, FormControl, FormMessage, FormLabel } from "@/components/ui/form";
 import { FieldValues, ControllerRenderProps } from "react-hook-form";
 
 interface OriginSelectProps {
@@ -8,6 +8,7 @@ interface OriginSelectProps {
     gender: string;
     origin: string;
     firstLetter: string;
+    meaning?: string;
   }, 'origin'>;
 }
 
@@ -50,10 +51,11 @@ function OriginSelect({ field }: OriginSelectProps) {
 
   return (
     <FormItem>
+      <FormLabel className="text-white">Asal Nama</FormLabel>
       <Select onValueChange={field.onChange} defaultValue={field.value}>
         <FormControl>
           <SelectTrigger>
-            <SelectValue placeholder="Asal Nama" />
+            <SelectValue placeholder="Pilih asal nama" />
           </SelectTrigger>
         </FormControl>
         <SelectContent>

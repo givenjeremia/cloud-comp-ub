@@ -22,6 +22,8 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { Navbar } from "./components/Navbar";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { IconBrandFacebook, IconBrandGmail, IconBrandInstagram, IconBrandWhatsapp } from "@tabler/icons-react";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 const FormSchema = z.object({
   gender: z
@@ -36,6 +38,7 @@ const FormSchema = z.object({
     .string({
       required_error: "Mohon pilih salah satu huruf depan.",
     }),
+  meaning: z.string().optional(),
 })
 
 export type Name = {
@@ -91,53 +94,10 @@ export default function Home() {
     resolver: zodResolver(FormSchema),
   })
 
-  const [popularNames, setPopularNames] = useState<Name[]>([]);
   const [names, setNames] = useState<Name[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [likedNames, setLikedNames] = useState<{ [uuid: string]: boolean }>({});
-  const [error, setError] = useState<string | null>(null);
-
-
-  useEffect(() => {
-    const fetchNames = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await fetch("https://namabuahhati.com/service/api/baby/data-by-like/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "api-key": `ubaya-baby-backend`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch names");
-        }
-
-        const responseData = await response.json();
-        console.log(responseData)
-
-        // Extract the 'data' array from the response
-        if (Array.isArray(responseData.data)) {
-          setPopularNames(responseData.data); // Set the names state with the data array
-        } else {
-          throw new Error("Response data is not an array");
-        }
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNames();
-  }, []);
 
   const handleLike = async (uuid: string) => {
     try {
@@ -158,18 +118,14 @@ export default function Home() {
         throw new Error("Failed to like");
       }
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred");
-      }
+      console.log(err);
     } finally {
       // setLoading(false);
     }
   };
 
   const cards = names.map((name) => (
-    <Card key={name.name} className="w-64 bg-opacity-10 bg-white text-white text-left h-56 flex flex-col justify-between">
+    <Card key={name.name} className="w-96 bg-opacity-10 bg-white text-white text-left h-72 flex flex-col justify-between">
       <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="flex justify-center items-center">
           <span className={`${name.gender == 'M' ? 'bg-blue-400' : 'bg-pink-400'} w-8 h-8 rounded-full p-2 me-2 flex items-center justify-center`}>
@@ -180,7 +136,7 @@ export default function Home() {
         <Button
           variant={"link"}
           size={"icon"}
-          onClick={() => handleLike(name.uuid)}
+          onClick={likedNames[name.uuid] ? () => handleLike(name.uuid) : undefined}
         >
           <Heart color="#fff" fill={likedNames[name.uuid] ? '#fff' : 'none'} />
         </Button>
@@ -196,6 +152,7 @@ export default function Home() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     // Request data
+    setLoading(true);  // Start loading
     console.log(JSON.stringify(data));
     try {
       const response = await fetch("https://namabuahhati.com/service/api/baby/random-baby-name/", {
@@ -218,15 +175,10 @@ export default function Home() {
         throw new Error("Response data is not an array");
       }
     } catch (err) {
-      if (err instanceof Error) {
-        // If the error is an instance of Error, access its message
-        setError(err.message);
-      } else {
-        // Handle any other types of errors (rare case)
-        setError("An unknown error occurred");
-      }
+      console.log(err)
     } finally {
       setLoading(false);  // Stop loading
+      setLoaded(true);
     }
   }
 
@@ -261,73 +213,96 @@ export default function Home() {
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 sm:w-full space-y-6 mb-24 flex flex-col sm:flex sm:flex-row sm:items-start sm:justify-center sm:space-x-4 sm:space-y-0">
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mb-24 w-full flex flex-col items-center justify-center">
+            <div className="w-2/3 md:w-full space-y-4 flex flex-col md:flex md:flex-row md:items-start md:justify-center md:space-x-4 md:space-y-0 mb-10 md:mb-6">
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-white">Jenis Kelamin</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih jenis kelamin" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="all">Semua</SelectItem>
+                        <SelectItem value="M">Laki-laki</SelectItem>
+                        <SelectItem value="F">Perempuan</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="origin"
+                render={({ field }) => (
+                  <OriginSelect field={field} />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="firstLetter"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-white">Huruf Depan</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih huruf depan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="all">Semua</SelectItem>
+                        {Array.from(Array(26)).map((_, i) => {
+                          const letter = String.fromCharCode(65 + i);
+                          return (
+                            <SelectItem key={letter} value={letter}>
+                              {letter}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="meaning"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-white">Arti Nama</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Jenis Kelamin" />
-                      </SelectTrigger>
+                      <Input type="text" placeholder="Ketik arti nama" className="text-white placeholder:text-white" />
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="all">Semua</SelectItem>
-                      <SelectItem value="M">Laki-laki</SelectItem>
-                      <SelectItem value="F">Perempuan</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="origin"
-              render={({ field }) => (
-                <OriginSelect field={field} />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="firstLetter"
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Huruf Depan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="all">Semua</SelectItem>
-                      {Array.from(Array(26)).map((_, i) => {
-                        const letter = String.fromCharCode(65 + i);
-                        return (
-                          <SelectItem key={letter} value={letter}>
-                            {letter}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <button type="submit" className="px-4 rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200 h-9">
-              {loading ? "Mencari..." : "Cari Nama"}
-            </button>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-2/3 md:w-full flex flex-col md:flex md:flex-row md:items-start md:justify-center">
+              <button type="submit" disabled={loading} className={`${loading ? "cursor-not-allowed bg-slate-500" : "bg-gradient-to-r from-indigo-600 to-purple-600"}  px-8 rounded-md  text-white focus:ring-2 hover:shadow-xl transition duration-200 h-10`}>
+                {loading ? "Mencari..." : "Cari Nama"}
+              </button>
+            </div>
           </form>
         </Form>
-        {names.length > 0 ? (
-          <div className="text-center w-full mb-5">
+        {names.length > 0 && loaded ? (
+          <div className="text-center w-full mb-16">
             <h5 className="mb-6 text-white">Berikut beberapa nama yang sesuai untuk buah hati Anda</h5>
             <Carousel items={cards} />
           </div>
-        ) : (null)}
+        ) : (names.length <= 0 && loaded ? (
+          <div className="text-center w-full mb-16">
+            <h5 className="mb-6 text-white">Yahh belum ada nama yang sesuai kriteria Anda</h5>
+          </div>
+        ) : null)}
 
         <h2 id="popular" className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-purple-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Nama-nama bayi terpopuler</h2>
 
@@ -336,29 +311,29 @@ export default function Home() {
         <h2 id="tips" className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Tips-tips memilih nama bayi</h2>
         <HoverEffect items={tips} className="mb-16" />
 
-        <hr className="w-full mb-8" />
+        <Separator className="mb-8" />
 
         <div className="w-full flex flex-col lg:flex-row justify-between gap-4 lg:gap-12 mb-16">
           <div className="lg:w-2/3">
             <h2 className="text-2xl font-extrabold mb-4 bg-gradient-to-r from-pink-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Nama Buah Hati</h2>
-            <p className="text-base text-white">Nama Buah Hati adalah sebuah website yang dirancang untuk membantu Anda dalam menemukan nama yang sempurna bagi buah hati mereka. Dengan berbagai fitur untuk menghasilkan nama bayi berdasarkan kategori seperti jenis kelamin, asal bahasa, dan huruf depan, Nama Buah Hati memberikan inspirasi untuk nama bayi Anda. Website ini juga memungkinkan Anda untuk menyukai dan membandingkan nama-nama yang paling populer, serta menawarkan rekomendasi tips untuk memilih nama bayi.</p>
+            <p className="text-sm text-neutral-300 font-light">Nama Buah Hati adalah sebuah website yang dirancang untuk membantu Anda dalam menemukan nama yang sempurna bagi buah hati mereka. Dengan berbagai fitur untuk menghasilkan nama bayi berdasarkan kategori seperti jenis kelamin, asal bahasa, dan huruf depan, Nama Buah Hati memberikan inspirasi untuk nama bayi Anda. Website ini juga memungkinkan Anda untuk menyukai dan membandingkan nama-nama yang paling populer, serta menawarkan rekomendasi tips untuk memilih nama bayi.</p>
           </div>
           <div className="lg:w-1/3">
-            <h2 className="text-2xl font-extrabold mb-4 bg-gradient-to-r from-pink-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Kontak Kami</h2>
-            <p className="flex text-white gap-2 mb-2">
-              <IconBrandGmail className="text-white h-6 w-6" />
+            <h3 className="text-xl text-left font-extrabold mb-4 text-white pb-2">Kontak Kami</h3>
+            <p className="flex text-neutral-100 gap-2 mb-2">
+              <IconBrandGmail className="text-pink-300 h-6 w-6" />
               namabuahhati@gmail.com
             </p>
-            <p className="flex text-white gap-2 mb-2">
-              <IconBrandFacebook className="text-white h-6 w-6" />
+            <p className="flex text-neutral-100 gap-2 mb-2">
+              <IconBrandFacebook className="text-pink-300 h-6 w-6" />
               namabuahhati
             </p>
-            <p className="flex text-white gap-2 mb-2">
-              <IconBrandInstagram className="text-white h-6 w-6" />
+            <p className="flex text-neutral-100 gap-2 mb-2">
+              <IconBrandInstagram className="text-pink-300 h-6 w-6" />
               namabuahhati
             </p>
-            <p className="flex text-white gap-2 mb-2">
-              <IconBrandWhatsapp className="text-white h-6 w-6" />
+            <p className="flex text-neutral-100 gap-2 mb-2">
+              <IconBrandWhatsapp className="text-pink-300 h-6 w-6" />
               +62 831 1234 5678
             </p>
           </div>
