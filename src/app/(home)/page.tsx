@@ -279,7 +279,7 @@ export default function Home() {
                   <FormItem>
                     <FormLabel className="text-white">Arti Nama</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="Ketik arti nama" className="text-white placeholder:text-white" />
+                      <Input type="text" placeholder="Ketik arti nama" value={field.value ?? ''} onChange={field.onChange} className="text-white placeholder:text-white" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
