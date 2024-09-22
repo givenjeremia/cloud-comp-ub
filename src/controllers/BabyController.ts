@@ -57,6 +57,7 @@ class BabyController extends Controller {
             //   }
             // : undefined; // Use undefined for no filtering
             var data;
+            var totalCount;
             if (filter) {
                 data = await prisma.babyName.findMany({
                     where: {
@@ -72,6 +73,15 @@ class BabyController extends Controller {
                     skip: (page - 1) * pageSize,
                     take: pageSize,
                 });
+                totalCount =await prisma.babyName.count({
+                    where: {
+                      OR: [
+                        { name: { contains: filter as string } },
+                        { meaning: { contains: filter as string } },
+                        { origin: { contains: filter as string } },
+                      ],
+                    },
+                  });
             } else {
                 data = await prisma.babyName.findMany({
                     orderBy: {
@@ -80,6 +90,7 @@ class BabyController extends Controller {
                     skip: (page - 1) * pageSize,
                     take: pageSize,
                 });
+               totalCount = await prisma.babyName.count();
             }
             
         
@@ -92,7 +103,7 @@ class BabyController extends Controller {
             //     };
             // }));
 
-            const totalCount = await prisma.babyName.count();
+            // const totalCount = await prisma.babyName.count();
             const totalPages = Math.ceil(totalCount / pageSize);
 
             const createLink = (newPage: number) => {
