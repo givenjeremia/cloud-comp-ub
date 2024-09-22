@@ -140,13 +140,14 @@ class BabyController extends Controller {
                   ...(req.body.origin !== 'all' ? { origin: req.body.origin } : {}),
                   ...(req.body.gender !== 'all' ? {  gender: req.body.gender } : {}),
                   ...(firstLetter && firstLetter !== 'all' ? { name: { startsWith: firstLetter } } : {}),
-                  ...( meaning ? { meaning: meaning } : {}),
+                  ...(meaning ? { meaning: { contains: meaning } } : {}),
                 },
                 orderBy: {
                     like: {
                       sort: 'desc',
                     }
                   },
+                take: 30,
               });
               
             const randomBabyNames = babyNames
