@@ -125,7 +125,7 @@ export default function Home() {
   };
 
   const cards = names.map((name) => (
-    <Card key={name.name} className="w-72 bg-opacity-10 bg-white text-white text-left h-96 flex flex-col justify-between">
+    <Card key={name.name} className="w-64 bg-opacity-10 bg-white text-white text-left h-64 flex flex-col justify-between">
       <CardHeader className="flex flex-row justify-between items-center p-4">
         <CardTitle className="flex justify-center items-center">
           <span className={`${name.gender == 'M' ? 'bg-blue-400' : 'bg-pink-400'} w-8 h-8 rounded-full p-2 me-2 flex items-center justify-center`}>
@@ -142,7 +142,7 @@ export default function Home() {
         </Button>
       </CardHeader>
       <CardContent className="p-4">
-        <p className="text-sm font-light">{name.meaning}</p>
+        <p className="text-sm font-light line-clamp-4">{name.meaning}</p>
       </CardContent>
       <CardFooter className="p-4">
         <p className="text-smt">- {name.origin}</p>
