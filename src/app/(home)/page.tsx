@@ -125,8 +125,8 @@ export default function Home() {
   };
 
   const cards = names.map((name) => (
-    <Card key={name.name} className="w-96 bg-opacity-10 bg-white text-white text-left h-72 flex flex-col justify-between">
-      <CardHeader className="flex flex-row justify-between items-center">
+    <Card key={name.name} className="w-72 bg-opacity-10 bg-white text-white text-left h-96 flex flex-col justify-between">
+      <CardHeader className="flex flex-row justify-between items-center p-4">
         <CardTitle className="flex justify-center items-center">
           <span className={`${name.gender == 'M' ? 'bg-blue-400' : 'bg-pink-400'} w-8 h-8 rounded-full p-2 me-2 flex items-center justify-center`}>
             {name.gender == 'M' ? '👦' : '👧'}
@@ -136,16 +136,16 @@ export default function Home() {
         <Button
           variant={"link"}
           size={"icon"}
-          onClick={likedNames[name.uuid] ? () => handleLike(name.uuid) : undefined}
+          onClick={!likedNames[name.uuid] ? () => handleLike(name.uuid) : undefined}
         >
           <Heart color="#fff" fill={likedNames[name.uuid] ? '#fff' : 'none'} />
         </Button>
       </CardHeader>
-      <CardContent>
-        <p>{name.meaning}</p>
+      <CardContent className="p-4">
+        <p className="text-sm font-light">{name.meaning}</p>
       </CardContent>
-      <CardFooter>
-        <p className="text-sm font-light">- {name.origin}</p>
+      <CardFooter className="p-4">
+        <p className="text-smt">- {name.origin}</p>
       </CardFooter>
     </Card>
   ));
@@ -190,7 +190,7 @@ export default function Home() {
           delay: 0.3,
           duration: 0.8,
           ease: "easeInOut",
-        }} className="flex flex-col items-center px-12 xl:px-24 lg:pt-12">
+        }} className="flex flex-col items-center px-8 md:px-12 xl:px-24 lg:pt-12">
         <Navbar />
         <div className="flex items-center justify-center pb-8 lg:pb-0 mt-16">
           <Badge className="me-2 bg-gradient-to-r from-blue-600 to-indigo-600">Terbaru&nbsp;✨</Badge>
