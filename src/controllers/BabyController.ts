@@ -132,10 +132,15 @@ class BabyController extends Controller {
             const errors = validationResult(req);
             if (!errors.isEmpty()) return super.badRequest(res, "invalid request", errors.array());
 
+            const firstLetter = req.body.firstLetter;
+            const meaning = req.body.meaning;
+
             const babyNames = await prisma.babyName.findMany({
                 where: {
                   origin: req.body.origin,
                   gender: req.body.gender,
+                  ...(firstLetter && firstLetter !== 'all' ? { name: { startsWith: firstLetter } } : {}),
+                  ...( meaning ? { meaning: meaning } : {}),
                 },
                 orderBy: {
                     like: {
@@ -147,7 +152,6 @@ class BabyController extends Controller {
             const randomBabyNames = babyNames
                 .sort(() => 0.5 - Math.random()) 
                 .slice(0, 10);                  
-              
               
             return super.success(res, "success", randomBabyNames);
         } catch (error: any) {
