@@ -32,7 +32,7 @@ export const TextGenerateEffect = ({
 
   const renderWords = () => {
     return (
-      <motion.p ref={scope}>
+      <motion.h1 ref={scope}>
         {wordsArray.map((word, idx) => {
           return (
             <motion.span
@@ -48,7 +48,7 @@ export const TextGenerateEffect = ({
             </motion.span>
           );
         })}
-      </motion.p>
+      </motion.h1>
     );
   };
 
