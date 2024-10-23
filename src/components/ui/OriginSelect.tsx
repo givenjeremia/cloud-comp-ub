@@ -5,9 +5,9 @@ import { FieldValues, ControllerRenderProps } from "react-hook-form";
 
 interface OriginSelectProps {
   field: ControllerRenderProps<{
-    gender: string;
-    origin: string;
-    firstLetter: string;
+    gender?: string;
+    origin?: string;
+    firstLetter?: string;
     meaning?: string;
   }, 'origin'>;
 }
