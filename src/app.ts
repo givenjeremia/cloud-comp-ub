@@ -45,7 +45,7 @@ class App {
 
     public middlewares(): void {
         // insert middleware here
-        this.app.use(ApiKeyMiddleware);
+        // this.app.use(ApiKeyMiddleware);
     }
 
     public routes(): void {

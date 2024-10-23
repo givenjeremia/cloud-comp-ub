@@ -24,7 +24,7 @@ class BabyController extends Controller {
     public routes(): void {
         this.router.get("/data-origin", this.DataOrigin);
         this.router.get("/data-by-like", this.DataByLike);
-        this.router.post("/random-baby-name",this.validateGetRandomBabyName, this.getRandomBabyName);
+        this.router.get("/random-baby-name",this.validateGetRandomBabyName, this.getRandomBabyName);
         this.router.put("/like-baby-name/:uuid", this.likeBabyName);
     }
 
