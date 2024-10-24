@@ -22,10 +22,16 @@ class BabyController extends Controller {
     }
 
     public routes(): void {
-        this.router.get("/data-origin", this.DataOrigin);
-        this.router.get("/data-by-like", this.DataByLike);
-        this.router.get("/random-baby-name",this.validateGetRandomBabyName, this.getRandomBabyName);
-        this.router.put("/like-baby-name/:uuid", this.likeBabyName);
+        // this.router.get("/data-origin", this.DataOrigin);
+        // this.router.get("/data-by-like", this.DataByLike);
+        // this.router.get("/random-baby-name",this.validateGetRandomBabyName, this.getRandomBabyName);
+        // this.router.put("/like-baby-name/:uuid", this.likeBabyName);
+        
+        // new Route
+        this.router.get("/", this.DataOrigin);
+        // this.router.get("/", this.DataByLike);
+        // this.router.get("/",this.validateGetRandomBabyName, this.getRandomBabyName);
+        // this.router.put("/:uuid", this.likeBabyName);
     }
 
 

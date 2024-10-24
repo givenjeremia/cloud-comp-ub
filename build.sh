@@ -14,7 +14,7 @@ read -p "Enter the container port (default: 80): " CONTAINER_PORT
 CONTAINER_PORT=${CONTAINER_PORT:-80}  # Default value
 
 # Stop and remove the old container if it exists
-if [ "$(docker ps -q -f name=${CONTAINER_NAME})" ]; then
+if [ "$(sudo docker ps -q -f name=${CONTAINER_NAME})" ]; then
     echo "Stopping and removing existing container: ${CONTAINER_NAME}"
     docker stop ${CONTAINER_NAME}
     docker rm ${CONTAINER_NAME}

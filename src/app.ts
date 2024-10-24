@@ -50,8 +50,9 @@ class App {
 
     public routes(): void {
         // insert routes here
-        this.app.use("/", AuthController);
-        this.app.use("/baby", BabyController);
+        // this.app.use("/", AuthController);
+        // this.app.use("/baby", BabyController);
+        this.app.use("/", BabyController);
         
         this.app.all("*", (req: Request, res: Response) => {
             return res.status(404).json({
