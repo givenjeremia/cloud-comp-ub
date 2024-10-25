@@ -1,0 +1,29 @@
+# name: Deploy to VPS
+
+# on:
+#   push:
+#     branches:
+#       - be
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Install sshpass
+#       run: sudo apt-get install sshpass
+
+#     - name: Copy files to VPS
+#       run: |
+#         sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -r ./* givenjeremia@your_vps_ip:/var/www/
+
+#     - name: SSH into VPS and deploy
+#       run: |
+#         sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh givenjeremia@your_vps_ip << EOF
+#           cd /var/www
+#           docker-compose down
+#           docker-compose up -d --build
+#         EOF
