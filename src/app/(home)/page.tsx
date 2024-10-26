@@ -187,8 +187,8 @@ export default function Home() {
       }
 
       const responseData = await response.json();  // Parse the response data
-      if (Array.isArray(responseData.data)) {
-        setNames(responseData.data); // Set the names state with the data array
+      if (Array.isArray(responseData.data.data)) {
+        setNames(responseData.data.data); // Set the names state with the data array
       } else {
         throw new Error("Response data is not an array");
       }
@@ -230,16 +230,18 @@ export default function Home() {
             />
           </div>
         </div>
-        <Select value={criteria} onValueChange={(value) => setCriteria(value)}>
-          <SelectTrigger>
-            <SelectValue placeholder="Pilih kriteria" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="firstLetter">Inisial</SelectItem>
-            <SelectItem value="meaning">Arti</SelectItem>
-            <SelectItem value="origin">Asal</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="w-full md:w-1/2 lg:w-1/4 mb-5">
+          <Select value={criteria} onValueChange={(value) => setCriteria(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Pilih kriteria" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="firstLetter">Inisial</SelectItem>
+              <SelectItem value="meaning">Arti</SelectItem>
+              <SelectItem value="origin">Asal</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mb-24 w-full flex flex-col items-center justify-center">
             <div className="w-2/3 md:w-full space-y-4 flex flex-col md:flex md:flex-row md:items-start md:justify-center md:space-x-4 md:space-y-0 mb-10 md:mb-6">
