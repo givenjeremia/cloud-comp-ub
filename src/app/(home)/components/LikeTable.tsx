@@ -141,7 +141,7 @@ export function BabyDataTable() {
           placeholder="Silahkan mencari..."
           value={filter} // Use filter state directly
           onChange={(event) => setFilter(event.target.value)} // Update filter state
-          className="max-w-sm text-white"
+          className="max-w-sm text-white placeholder:text-white"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
