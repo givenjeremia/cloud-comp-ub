@@ -268,19 +268,16 @@ export default function Home() {
           </div>
         ) : null)}
 
-        <section className="w-full flex flex-col items-center">
-          <h2 id="popular" className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-purple-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Nama-nama bayi terpopuler</h2>
-          <BabyDataTable />
-        </section>
+        <h2 id="popular" className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-purple-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Nama-nama bayi terpopuler</h2>
 
-        <section className="w-full flex flex-col items-center">
-          <h2 id="tips" className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Tips-tips memilih nama bayi</h2>
-          <HoverEffect items={tips} className="mb-16" />
-        </section>
+        <BabyDataTable />
+
+        <h2 id="tips" className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Tips-tips memilih nama bayi</h2>
+        <HoverEffect items={tips} className="mb-16" />
 
         <Separator className="mb-8" />
 
-        <footer className="w-full flex flex-col lg:flex-row justify-between gap-4 lg:gap-12 mb-16">
+        <div className="w-full flex flex-col lg:flex-row justify-between gap-4 lg:gap-12 mb-16">
           <div className="lg:w-2/3">
             <h2 className="text-2xl font-extrabold mb-4 bg-gradient-to-r from-pink-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Nama Buah Hati</h2>
             <p className="text-sm text-neutral-300 font-light">Nama Buah Hati adalah sebuah website yang dirancang untuk membantu Anda dalam menemukan nama yang sempurna bagi buah hati mereka. Dengan berbagai fitur untuk menghasilkan nama bayi berdasarkan kategori seperti jenis kelamin, asal bahasa, dan huruf depan, Nama Buah Hati memberikan inspirasi untuk nama bayi Anda. Website ini juga memungkinkan Anda untuk menyukai dan membandingkan nama-nama yang paling populer, serta menawarkan rekomendasi tips untuk memilih nama bayi.</p>
@@ -304,7 +301,7 @@ export default function Home() {
               +62 831 1234 5678
             </p>
           </div>
-        </footer>
+        </div>
       </motion.div>
     </AuroraBackground>
   );
