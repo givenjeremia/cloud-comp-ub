@@ -8,12 +8,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart } from "lucide-react"
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Facebook, Heart, Mail } from "lucide-react"
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
 import { Carousel } from "@/components/ui/apple-cards-carousel";
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 // import React from "react";
 
 import OriginSelect from "@/components/ui/OriginSelect";
@@ -23,8 +22,11 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { Navbar } from "./components/Navbar";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { IconBrandFacebook, IconBrandGmail, IconBrandInstagram, IconBrandWhatsapp } from "@tabler/icons-react";
+<<<<<<< HEAD
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+=======
+>>>>>>> parent of b005c4f (fe)
 
 const FormSchema = z.object({
   gender: z
@@ -39,7 +41,10 @@ const FormSchema = z.object({
     .string({
       required_error: "Mohon pilih salah satu huruf depan.",
     }),
+<<<<<<< HEAD
   meaning: z.string().optional(),
+=======
+>>>>>>> parent of b005c4f (fe)
 })
 
 export type Name = {
@@ -50,6 +55,45 @@ export type Name = {
   origin: string,
   like: number,
 }
+
+const tips: { title: string; description: string; icon: ReactNode }[] = [
+  {
+    title: "Pertimbangkan Arti Nama",
+    description:
+      "Pilih nama yang memiliki arti positif atau sesuai dengan harapan orang tua",
+    icon: <span>📜</span>,
+  },
+  {
+    title: "Perhatikan Pelafalan dan Penulisan",
+    description:
+      "Pastikan nama mudah diucapkan dan ditulis, terutama agar anak tidak kesulitan di masa depan",
+    icon: <span>🖋️</span>,
+  },
+  {
+    title: "Pertimbangkan Keterkaitan Budaya",
+    description:
+      "Pilih nama yang sesuai dengan latar belakang budaya atau agama keluarga, jika penting bagi Anda",
+    icon: <span>🌏</span>,
+  },
+  {
+    title: "Cek Kesamaan Nama dengan Kerabat",
+    description:
+      "Hindari nama yang terlalu mirip dengan anggota keluarga lain untuk menghindari kebingungan",
+    icon: <span>👨‍👩‍👧‍👦</span>,
+  },
+  {
+    title: "Tes Kombinasi Nama Lengkap",
+    description:
+      "Uji bagaimana nama depan, tengah, dan belakang terdengar jika digabungkan, untuk memastikan harmonis",
+    icon: <span>🎶</span>,
+  },
+  {
+    title: "Pikirkan Nama Panggilan",
+    description:
+      "Pertimbangkan nama panggilan yang mungkin muncul dari nama lengkap, dan pastikan Anda menyukainya.",
+    icon: <span>📞</span>,
+  },
+];
 
 export default function Home() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -114,7 +158,10 @@ export default function Home() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     // Request data
+<<<<<<< HEAD
     setLoading(true);  // Start loading
+=======
+>>>>>>> parent of b005c4f (fe)
     console.log(JSON.stringify(data));
     try {
       const response = await fetch("https://namabuahhati.com/service/api/baby/random-baby-name/", {
@@ -152,29 +199,34 @@ export default function Home() {
           delay: 0.3,
           duration: 0.8,
           ease: "easeInOut",
+<<<<<<< HEAD
         }} className="flex flex-col items-center px-8 md:px-12 xl:px-24 lg:pt-12">
+=======
+        }} className="flex flex-col items-center px-12 xl:px-24 lg:pt-12">
+>>>>>>> parent of b005c4f (fe)
         <Navbar />
         <div className="flex items-center justify-center pb-8 lg:pb-0 mt-16">
-          <Badge className="me-2 bg-gradient-to-r from-rose-600 to-fuchsia-600">Terbaru&nbsp;✨</Badge>
+          <Badge className="me-2 bg-gradient-to-r from-blue-600 to-indigo-600">Terbaru&nbsp;✨</Badge>
           <h5 className="text-white">Nama-nama bayi terbaik 2025</h5>
         </div>
-        <div className="w-full flex flex-col lg:flex-row justify-center items-center">
+        <div id="generator" className="w-full flex flex-col lg:flex-row justify-center items-center">
           <div className="lg:w-3/5">
             <div className="w-full mb-4">
-              <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-white inline-block text-transparent bg-clip-text lg:text-left pb-2 pe-8">Dapatkan nama terbaik untuk buah hati Anda sekarang juga</h1>
+              <TextGenerateEffect words="Dapatkan nama terbaik untuk Buah Hati Anda sekarang juga" />
             </div>
-            <h2 className="text-base font-light mb-0 text-white text-center lg:text-left">Kami memiliki lebih dari 80 ribu nama yang bisa Anda pilih</h2>
+            <h2 className="text-base font-light mb-0 text-white text-center lg:text-left">Kami memiliki lebih dari <span className="font-extrabold">80.000</span> nama yang bisa Anda pilih</h2>
           </div>
           <div className="lg:w-2/5">
             <Image
               src="/babies.png"
               width={500}
               height={500}
-              alt="Picture of the author"
+              alt="babies"
             />
           </div>
         </div>
         <Form {...form}>
+<<<<<<< HEAD
           <form onSubmit={form.handleSubmit(onSubmit)} className="mb-24 w-full flex flex-col items-center justify-center">
             <div className="w-2/3 md:w-full space-y-4 flex flex-col md:flex md:flex-row md:items-start md:justify-center md:space-x-4 md:space-y-0 mb-10 md:mb-6">
               <FormField
@@ -240,9 +292,19 @@ export default function Home() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-white">Arti Nama</FormLabel>
+=======
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 sm:w-full space-y-6 mb-24 flex flex-col sm:flex sm:flex-row sm:items-start sm:justify-center sm:space-x-4 sm:space-y-0">
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+>>>>>>> parent of b005c4f (fe)
                     <FormControl>
                       <Input type="text" placeholder="Ketik arti nama" value={field.value ?? ''} onChange={field.onChange} className="text-white placeholder:text-white" />
                     </FormControl>
+<<<<<<< HEAD
                     <FormMessage />
                   </FormItem>
                 )}
@@ -253,15 +315,63 @@ export default function Home() {
                 {loading ? "Mencari..." : "Cari Nama"}
               </button>
             </div>
+=======
+                    <SelectContent>
+                      <SelectItem value="all">Semua</SelectItem>
+                      <SelectItem value="M">Laki-laki</SelectItem>
+                      <SelectItem value="F">Perempuan</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="origin"
+              render={({ field }) => (
+                <OriginSelect field={field} />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="firstLetter"
+              render={({ field }) => (
+                <FormItem>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Huruf Depan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="all">Semua</SelectItem>
+                      {Array.from(Array(26)).map((_, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        return (
+                          <SelectItem key={letter} value={letter}>
+                            {letter}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <button type="submit" className="px-4 rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200 h-9">
+              {loading ? "Mencari..." : "Cari Nama"}
+            </button>
+>>>>>>> parent of b005c4f (fe)
           </form>
         </Form>
         {names.length > 0 && loaded ? (
           <div className="text-center w-full mb-16">
             <h5 className="mb-6 text-white">Berikut beberapa nama yang sesuai untuk buah hati Anda</h5>
-            <div className="w-full">
-              <Carousel items={cards} />
-            </div>
+            <Carousel items={cards} />
           </div>
+<<<<<<< HEAD
         ) : (names.length <= 0 && loaded ? (
           <div className="text-center w-full mb-16">
             <h5 className="mb-6 text-white">Yahh belum ada nama yang sesuai kriteria Anda</h5>
@@ -298,6 +408,40 @@ export default function Home() {
             </p>
             <p className="flex text-neutral-100 gap-2 mb-2">
               <IconBrandWhatsapp className="text-pink-300 h-6 w-6" />
+=======
+        ) : (null)}
+
+        <h2 id="popular" className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-purple-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Nama-nama bayi terpopuler</h2>
+
+        <BabyDataTable />
+
+        <h2 id="tips" className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-fuchsia-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Tips-tips memilih nama bayi</h2>
+        <HoverEffect items={tips} className="mb-16" />
+
+        <hr className="w-full mb-8" />
+
+        <div className="w-full flex flex-col lg:flex-row justify-between gap-4 lg:gap-12 mb-16">
+          <div className="lg:w-2/3">
+            <h2 className="text-2xl font-extrabold mb-4 bg-gradient-to-r from-pink-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Nama Buah Hati</h2>
+            <p className="text-base text-white">Nama Buah Hati adalah sebuah website yang dirancang untuk membantu Anda dalam menemukan nama yang sempurna bagi buah hati mereka. Dengan berbagai fitur untuk menghasilkan nama bayi berdasarkan kategori seperti jenis kelamin, asal bahasa, dan huruf depan, Nama Buah Hati memberikan inspirasi untuk nama bayi Anda. Website ini juga memungkinkan Anda untuk menyukai dan membandingkan nama-nama yang paling populer, serta menawarkan rekomendasi tips untuk memilih nama bayi.</p>
+          </div>
+          <div className="lg:w-1/3">
+            <h2 className="text-2xl font-extrabold mb-4 bg-gradient-to-r from-pink-400 to-white inline-block text-transparent bg-clip-text text-center pb-2">Kontak Kami</h2>
+            <p className="flex text-white gap-2 mb-2">
+              <IconBrandGmail className="text-white h-6 w-6" />
+              namabuahhati@gmail.com
+            </p>
+            <p className="flex text-white gap-2 mb-2">
+              <IconBrandFacebook className="text-white h-6 w-6" />
+              namabuahhati
+            </p>
+            <p className="flex text-white gap-2 mb-2">
+              <IconBrandInstagram className="text-white h-6 w-6" />
+              namabuahhati
+            </p>
+            <p className="flex text-white gap-2 mb-2">
+              <IconBrandWhatsapp className="text-white h-6 w-6" />
+>>>>>>> parent of b005c4f (fe)
               +62 831 1234 5678
             </p>
           </div>
