@@ -24,7 +24,9 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 # Salin file package.json dan pnpm-lock.yaml (jika ada)
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
+
+RUN rm -rf node_modules
 
 # Install dependencies menggunakan pnpm
 RUN pnpm install
@@ -33,7 +35,7 @@ RUN pnpm install
 COPY . .
 
 # Build aplikasi (gunakan pnpm untuk build)
-RUN pnpm run build
+RUN pnpm build
 
 # Expose port yang digunakan aplikasi
 EXPOSE 8080
