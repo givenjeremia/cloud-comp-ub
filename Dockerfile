@@ -57,7 +57,8 @@ COPY package.json pnpm-lock.yaml ./
 
 # Clean up any previous installations and install dependencies
 RUN rm -rf node_modules
-RUN pnpm install --frozen-lockfile
+# RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # Copy the Prisma schema directory
 COPY prisma ./prisma
