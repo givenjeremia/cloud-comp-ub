@@ -35,7 +35,7 @@ RUN pnpm install
 COPY . .
 
 # Build aplikasi (gunakan pnpm untuk build)
-RUN pnpm run build
+# RUN pnpm run build
 
 COPY tsconfig.json ./
 
