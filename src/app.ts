@@ -64,7 +64,7 @@ class App {
 
     public listen(): void {
         this.server.listen(this.port, () => {
-            console.log(`App listening on the http://localhost:${this.port}`);
+            console.log(`App listening on the http://0.0.0.0:${this.port}`);
         });
     }
 }
