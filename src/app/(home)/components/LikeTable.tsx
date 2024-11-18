@@ -90,7 +90,7 @@ export function BabyDataTable() {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`hhttp://43.203.222.17/baby/data-by-like/?page=${page}&pageSize=${pageSize}&query=${filter}`, {
+        const response = await fetch(`http://43.203.222.17/baby/data-by-like/?page=${page}&pageSize=${pageSize}&query=${filter}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

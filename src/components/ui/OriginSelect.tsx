@@ -23,7 +23,7 @@ function OriginSelect({ field }: OriginSelectProps) {
       setError(null);
 
       try {
-        const response = await fetch("hhttp://43.203.222.17/baby/data-origin/", {
+        const response = await fetch("http://43.203.222.17/baby/data-origin/", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
