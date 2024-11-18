@@ -43,4 +43,5 @@ COPY tsconfig.json ./
 EXPOSE 8080
 
 # Jalankan aplikasi menggunakan pnpm
-CMD ["pnpm", "start"]
+# CMD ["pnpm", "start"]
+CMD ["pnpm", "run", "dev"]
