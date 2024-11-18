@@ -22,6 +22,7 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { Navbar } from "./components/Navbar";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { IconBrandFacebook, IconBrandGmail, IconBrandInstagram, IconBrandWhatsapp } from "@tabler/icons-react";
+import { Input } from "@/components/ui/input";
 
 const FormSchema = z.object({
   gender: z
@@ -98,7 +99,7 @@ export default function Home() {
 
   const handleLike = async (uuid: string) => {
     try {
-      const response = await fetch(`https://namabuahhati.com/service/api/baby/like-baby-name/${uuid}`, {
+      const response = await fetch(`hhttp://43.203.222.17/baby/like-baby-name/${uuid}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +152,7 @@ export default function Home() {
     // Request data
     console.log(JSON.stringify(data));
     try {
-      const response = await fetch("https://namabuahhati.com/service/api/baby/random-baby-name/", {
+      const response = await fetch("hhttp://43.203.222.17/baby/random-baby-name/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

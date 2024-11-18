@@ -35,7 +35,9 @@ RUN pnpm install
 COPY . .
 
 # Build aplikasi (gunakan pnpm untuk build)
-RUN pnpm build
+RUN pnpm run build
+
+COPY tsconfig.json ./
 
 # Expose port yang digunakan aplikasi
 EXPOSE 8080
