@@ -1,16 +1,42 @@
+# FROM node:18
+
+# WORKDIR /app
+
+# COPY package*.json ./
+# RUN npm install
+
+
+# COPY . .
+
+# RUN npm run build
+
+
+
+# EXPOSE 8080
+# CMD ["npm", "start"]
+
+
 FROM node:18
+
+# Install pnpm globally
+RUN npm install -g pnpm
 
 WORKDIR /app
 
+# Salin file package.json dan pnpm-lock.yaml (jika ada)
 COPY package*.json ./
-RUN npm install
 
+# Install dependencies menggunakan pnpm
+RUN pnpm install
 
+# Salin semua file ke dalam kontainer
 COPY . .
 
-RUN npm run build
+# Build aplikasi (gunakan pnpm untuk build)
+RUN pnpm run build
 
+# Expose port yang digunakan aplikasi
+EXPOSE 8080
 
-
-EXPOSE 8002
-CMD ["npm", "start"]
+# Jalankan aplikasi menggunakan pnpm
+CMD ["pnpm", "start"]
