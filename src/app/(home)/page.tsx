@@ -134,7 +134,7 @@ export default function Home() {
   useEffect(() => {
     const fetchOrigins = async () => {
       try {
-        const response = await fetch("http://ubaya.xyz:7000/kel3_originlist", {
+        const response = await fetch("https://api.ubaya.xyz/kel3_originlist", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -162,7 +162,7 @@ export default function Home() {
 
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    let url = "http://ubaya.xyz:7000/kel3_";
+    let url = "https://api.ubaya.xyz/kel3_";
     // Request data
     setLoading(true);  // Start loading
     switch (criteria) {
